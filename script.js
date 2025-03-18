@@ -6,11 +6,18 @@ function addTransaction() {
     let amount = parseFloat(document.getElementById('amount').value);
     let type = document.querySelector('input[name="type"]:checked')?.value;
 
-    if (!name || !category || isNaN(amount) || amount === 0 || !type) {
+    if (!name || !category || isNaN(amount) || amount == 0 || !type) {
         alert("Please enter valid details.");
         return;
     }
-
+    
+    // Ensure expenses do not exceed income
+    if (type == "expense" && amount > income) {
+        alert("Invalid transaction");
+        return;
+    }
+    
+    
     let table = document.getElementById('transactionTable');
     let row = table.insertRow();
     row.insertCell(0).textContent = name;
@@ -19,7 +26,7 @@ function addTransaction() {
     row.insertCell(3).textContent = amount.toFixed(2);
 
    
-    type === "income" ? (income += amount) : (expense += amount);
+    type == "income" ? (income += amount) : (expense += amount);
 
     updateBalance();
     clearFields();
